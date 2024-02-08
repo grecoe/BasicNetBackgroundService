@@ -7,6 +7,7 @@
     /// </summary>
     public class CosmosSettings
     {
+        public string Name { get; set; } = "Cosmos";
         public string CosmosEndpoint { get; set; } = string.Empty;
         public string CosmosDB { get; set; } = string.Empty;
         public string CosmosCollection { get; set; } = string.Empty;

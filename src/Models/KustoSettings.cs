@@ -7,6 +7,7 @@
     /// </summary>
     internal class KustoSettings
     {
+        public string Name { get; set; } = "Kusto";
         public string KustoEndpoint { get; set; } = string.Empty;
         public string KustoDB { get; set; } = string.Empty;
         public string KustoTable { get; set; } = string.Empty;

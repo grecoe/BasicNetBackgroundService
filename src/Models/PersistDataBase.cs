@@ -1,15 +1,12 @@
-﻿using NETWorkerService.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NETWorkerService.Models
+﻿namespace NETWorkerService.Models
 {
+    using NETWorkerService.Interfaces;
+
     internal class PersistDataBase : IPersistData
     {
         public IConfiguration Configuration { get; private set; }
+        public string Name { get; set; }
+
 
         public PersistDataBase(IConfiguration configuration)
         {

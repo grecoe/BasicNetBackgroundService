@@ -14,10 +14,12 @@
             this._logger = _logger;
             this._settings = configuration.GetSection("CosmosSettings").Get<CosmosSettings>();
 
-            if (_settings == null)
+            if (this._settings == null)
             {
                 this._logger.LogError("Really expecting some settings here!");
             }
+
+            this.Name = this._settings.Name;
         }
 
         /// <summary>

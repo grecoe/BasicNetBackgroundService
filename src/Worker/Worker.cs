@@ -1,10 +1,13 @@
 namespace NETWorkerService.Services
 {
+    using Microsoft.Extensions.Configuration;
     using NETWorkerService.Interfaces;
+    using NETWorkerService.Models;
 
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly EngineSettings? _settings;
         private readonly IConfiguration _configuration;
         private readonly List<IPersistData> _persistors;
         private readonly IHostApplicationLifetime _applicationLifetime;
@@ -28,6 +31,13 @@ namespace NETWorkerService.Services
             this._applicationLifetime = appLifetime;
             this._configuration = configuration;
             this._persistors = persistors.ToList();
+
+            this._settings = this._configuration.GetSection("EngineSettings").Get<EngineSettings>();
+            if(this._settings == null)
+            {
+                this._logger.LogError("EngineSettings missing from AppConfig");
+                throw new ArgumentNullException(nameof(this._settings));
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,7 +47,7 @@ namespace NETWorkerService.Services
             {
                 if (this._logger.IsEnabled(LogLevel.Information))
                 {
-                    this._logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    this._logger.LogInformation($"{this._settings.JobName} Worker running at: {DateTimeOffset.Now}");
                     this._logger.LogInformation($"Worker has: {this._persistors.Count()} persistors associated");
                 }
 
@@ -49,12 +59,12 @@ namespace NETWorkerService.Services
                 {
                     if (this._logger.IsEnabled(LogLevel.Information))
                     {
-                        this._logger.LogInformation("Worker has run it's course");
+                        this._logger.LogInformation("Worker has run it's course, quitting now");
                     }
                     // Kill off the application, only one service here so jump.
                     this._applicationLifetime.StopApplication();
                 }
-                await Task.Delay(3000, stoppingToken);
+                await Task.Delay(this._settings.JobSleepTime, stoppingToken);
             }
         }
     }
