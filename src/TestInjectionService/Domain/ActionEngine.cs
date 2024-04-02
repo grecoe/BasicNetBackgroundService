@@ -14,7 +14,7 @@
             this.CollectActions();
         }
 
-        public IEnumerable<ICustomAction> GetCustomAction<T>(ActionType activityType, ILogger<T> logger)
+        public IEnumerable<ICustomAction> GetCustomAction<T>(ActionType activityType, Type inputType, ILogger<T> logger)
             where T : class
         {
             if( this.Actions.Count == 0)
@@ -22,7 +22,10 @@
                 this.CollectActions();
             }
 
-            List<ICustomAction> returnList = Actions.Where(x => x.Key.Action == activityType).Select(x => x.Value).ToList();
+            List<ICustomAction> returnList = Actions
+                .Where(x => x.Key.Action == activityType && x.Key.ActionInput.IsAssignableFrom(inputType))
+                .Select(x => x.Value).ToList();
+            
             returnList.ForEach(x => logger.LogInformation($"Returning {x.Name}"));
             return returnList;
         }

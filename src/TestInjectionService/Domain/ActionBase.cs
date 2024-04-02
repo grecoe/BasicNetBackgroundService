@@ -2,7 +2,7 @@
 {
     using TestInjectionService.Domain.Interfaces;
 
-    public class ActionBase
+    public class ActionBase: ICustomAction
     {
         public string Name { get; set; } = string.Empty;
         public IActionConfiguration Configuration { get; private set; }

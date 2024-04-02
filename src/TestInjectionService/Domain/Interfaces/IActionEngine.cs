@@ -4,7 +4,7 @@
 
     public interface IActionEngine
     {
-        public IEnumerable<ICustomAction> GetCustomAction<T>(ActionType activityType, ILogger<T> logger)
+        public IEnumerable<ICustomAction> GetCustomAction<T>(ActionType activityType, Type inputType, ILogger<T> logger)
             where T : class;
     }
 }

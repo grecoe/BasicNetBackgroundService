@@ -4,8 +4,11 @@
     using TestInjectionService.Domain.Attributes;
     using TestInjectionService.Domain.Interfaces;
 
-    [Action(Action = ActionType.Delete, Version = 1.1)]
-    public class DeleteAction : ActionBase, ICustomAction
+    /// <summary>
+    /// Define the class with an attribute with the expeced input types.
+    /// </summary>
+    [Action(Action = ActionType.Delete, Version = 1.1, ActionInput = typeof(ILogger))]
+    public class DeleteAction : ActionBase
     {
         public DeleteAction(IActionConfigurationsCollection configuration)
             : base("Delete Custom Action", configuration.GetActionConfiguration(ActionType.Delete))

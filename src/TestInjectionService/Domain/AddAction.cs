@@ -3,8 +3,11 @@
     using TestInjectionService.Domain.Attributes;
     using TestInjectionService.Domain.Interfaces;
 
-    [Action(Action = ActionType.Add, Version = 1.1)]
-    internal class AddAction : ActionBase, ICustomAction
+    /// <summary>
+    /// Define the class with an attribute with the expeced input types.
+    /// </summary>
+    [Action(Action = ActionType.Add, Version = 1.1, ActionInput = typeof(IConfiguration))]
+    internal class AddAction : ActionBase
     {
         public AddAction(IActionConfigurationsCollection configuration)
             : base("Add Custom Action", configuration.GetActionConfiguration(ActionType.Add))
