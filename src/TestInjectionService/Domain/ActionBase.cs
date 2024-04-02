@@ -2,27 +2,29 @@
 {
     using TestInjectionService.Domain.Interfaces;
 
-    public class ActionBase: ICustomAction
+    public abstract class ActionBase: ICustomAction
     {
+        /// <summary>
+        /// Name of the action
+        /// </summary>
         public string Name { get; set; } = string.Empty;
-        public IActionConfiguration Configuration { get; private set; }
+
+        /// <summary>
+        /// Optiona configuration coming from appsettings.json as long as it 
+        /// has the same type. Should not fail if not present. 
+        /// </summary>
+        public IActionConfiguration? Configuration { get; private set; }
 
         public ActionBase(string name, IActionConfiguration? configuration)
         {
-            if(configuration == null)
-            {
-                throw new ArgumentNullException($"Configuration not present for {name}");
-            }
-
             Configuration = configuration;
             Name = name;
         }
 
-        public virtual async Task Execute<T>(ILogger<T> logger, params object[] parameters)
-            where T : class
-        {
-            await Task.Delay(1);
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Never allowed to execute. 
+        /// </summary>
+        public abstract Task Execute<T>(ILogger<T> logger, params object[] parameters)
+            where T : class;
     }
 }

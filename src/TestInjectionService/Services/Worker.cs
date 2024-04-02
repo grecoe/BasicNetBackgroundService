@@ -1,6 +1,5 @@
 namespace TestInjectionService.Services
 {
-    using System.Reflection.Metadata;
     using TestInjectionService.Domain.Interfaces;
 
     public class Worker : BackgroundService
